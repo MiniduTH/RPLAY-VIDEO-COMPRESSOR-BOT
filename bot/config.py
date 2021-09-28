@@ -21,7 +21,7 @@ try:
     BOT_TOKEN = os.environ.get("TG_BOT_TOKEN", "")
     DEV = 1322549723
     AUTH_USERS = set(int(x) for x in os.environ.get("AUTH_USERS", "").split())
-    OWNER =  [int(i) for i in os.environ.get("OWNER_ID", "").split(" ")]
+    OWNER = [int(i) for i in os.environ.get("OWNER_ID", "").split(" ")]
     FFMPEG = config(
         "FFMPEG",
         default='ffmpeg -i "{}" -preset ultrafast -c:v libx265 -crf 27 -map 0:v -c:a aac -map 0:a -c:s copy -map 0:s? "{}"',
