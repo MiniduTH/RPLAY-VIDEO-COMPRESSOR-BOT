@@ -1,7 +1,7 @@
 {
-    "name": "CompressorQueue",
+    "name": "RPLAY-VIDEO-COMPRESSOR-BOT",
     "description": "A Normal Telegram Bot Which can Compress/encode/ Generate Samples of videos.",
-    "logo": "https://telegra.ph/file/75ee20ec8d8c8bba84f02.jpg",
+    "logo": "https://transfer.sh/czJtM9/photo_2021-09-26_22-38-30.jpg",
     "keywords": ["Telegram","python", "Video","Compressor","Encoder"],
     "repository": "https://github.com/1Danish-00/CompressorQueue",
     "success_url": "https://t.me/BotzHub",
@@ -24,8 +24,8 @@
             "value": ""
         },
         "THUMBNAIL": {
-            "description": "Put Link of any picture.",
-            "value": "https://telegra.ph/file/75ee20ec8d8c8bba84f02.jpg",
+            "description": "DON'T CHANGE IT.",
+            "value": "https://transfer.sh/czJtM9/photo_2021-09-26_22-38-30.jpg",
             "required": false
         },
         "FFMPEG": {
