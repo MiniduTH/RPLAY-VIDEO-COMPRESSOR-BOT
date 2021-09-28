@@ -1,6 +1,9 @@
-## Queue Compressor Bot (For Single Users)
+# RPLAY-VIDEO-COMPRESSOR-BOT
+
 
 [![Deploy](https://www.herokucdn.com/deploy/button.svg)](https://heroku.com/deploy)
+
+# RAILWAY deploy coming soon
 
 ### Variables
 `APP_ID` `API_HASH` `BOT_TOKEN`
