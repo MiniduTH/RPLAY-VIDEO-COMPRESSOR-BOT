@@ -16,7 +16,7 @@
 ###👆🏻👆🏻👆🏻 Click on button to install heroku add-on
 
 # RAILWAY deploy 
-
+### DEPLOY ON your own risk because I don't know what happened
 [![Deploy+on+Railway](https://railway.app/button.svg)](https://railway.app/new/template?template=https://github.com/Rplayoriginal/CompressorQueue&envs=API_ID,API_HASH,BOT_TOKEN,OWNER)
 #
 
