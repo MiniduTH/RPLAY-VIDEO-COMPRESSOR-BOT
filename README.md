@@ -10,12 +10,15 @@
 
 [![Deploy](https://www.herokucdn.com/deploy/button.svg)](https://heroku.com/deploy)
 
-#. 💜♥️ ADD-ON
+# 💜♥️ ADD-ON
 ## TO MAKE POWERFUL BOT
 <a href="https://dashboard.heroku.com/provision-addon?addonServiceId=6c67493d-8fc2-4cd4-9161-4f1ec11cbe69&planId=062a1cc7-f79f-404c-9f91-135f70175577"><img src="https://transfer.sh/v9OPmc/photo_2021-09-29_09-56-20.jpg"></a>
 ###👆🏻👆🏻👆🏻 Click on button to install heroku add-on
 
-# RAILWAY deploy coming soon
+# RAILWAY deploy 
+
+[![Deploy+on+Railway](https://railway.app/button.svg)](https://railway.app/new/template?template=https://github.com/Rplayoriginal/CompressorQueue&envs=API_ID,API_HASH,BOT_TOKEN,OWNER)
+#
 
 ### Variables
 `APP_ID` `API_HASH` `BOT_TOKEN`
