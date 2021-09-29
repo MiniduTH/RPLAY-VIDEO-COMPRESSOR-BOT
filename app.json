@@ -22,6 +22,6 @@
         "OWNER": {
             "description": "Get ur Id Of Telegram nd Paste Here.",
             "value": ""
-        },
+        }
     }
 }
