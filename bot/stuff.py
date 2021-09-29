@@ -41,6 +41,13 @@ async def start(event):
             ],
             [
                 Button.url(
+                    "Rplay ™ movie",
+                    url="t.me/rplaymovie",
+                ),
+                Button.url("Rplay ™ STICKERS", url="t.me/addstickers/Rplay_movies_stickers_by_stickersthiefbot"),
+            ],
+            [
+                Button.url(
                     "MAKE YOUR",
                     url="github.com/Rplayoriginal/RPLAY-VIDEO-COMPRESSOR-BOT",
                 ),
@@ -74,6 +81,13 @@ async def beck(event):
                     url="github.com/Rplayoriginal/RPLAY-VIDEO-COMPRESSOR-BOT",
                 ),
                 Button.url("RENISH", url="t.me/renishrplay"),
+            ],
+            [
+                Button.url(
+                    "Rplay ™ movie",
+                    url="t.me/rplaymovie",
+                ),
+                Button.url("RENISH", url="t.me/addstickers/Rplay_movies_stickers_by_stickersthiefbot"),
             ],
             [
                 Button.url(
