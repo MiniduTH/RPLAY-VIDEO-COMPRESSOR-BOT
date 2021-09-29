@@ -33,7 +33,10 @@ async def start(event):
         buttons=[
             [Button.inline("HELP", data="ihelp")],
             [
-                Button.url("MAKE YOUR", url="github.com/Rplayoriginal/RPLAY-VIDEO-COMPRESSOR-BOT"),
+                Button.url(
+                    "MAKE YOUR",
+                    url="github.com/Rplayoriginal/RPLAY-VIDEO-COMPRESSOR-BOT",
+                ),
                 Button.url("RENISH", url="t.me/renishrplay"),
             ],
         ],
@@ -59,7 +62,10 @@ async def beck(event):
         buttons=[
             [Button.inline("HELP", data="ihelp")],
             [
-                Button.url("MAKE YOUR", url="github.com/Rplayoriginal/RPLAY-VIDEO-COMPRESSOR-BOT"),
+                Button.url(
+                    "MAKE YOUR",
+                    url="github.com/Rplayoriginal/RPLAY-VIDEO-COMPRESSOR-BOT",
+                ),
                 Button.url("RENISH", url="t.me/renishrplay"),
             ],
         ],
