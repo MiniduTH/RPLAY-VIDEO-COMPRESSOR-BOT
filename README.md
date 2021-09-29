@@ -1,10 +1,5 @@
 # RPLAY-VIDEO-COMPRESSOR-BOT
 
-
-# DEMO BOT
-<a href="https://t.me/Demo5_r0bot"><img src="https://transfer.sh/Npows7/photo_2021-09-28_18-41-34.jpg"></a>
-
-
 # 💜♥️💜♥️ DEPLOY ON HEROKU
 ## 🚀 Deployment
 
@@ -25,6 +20,9 @@
 
 `OWNER` : Put Id Of Auth Users with a space between it
 
+
+# DEMO BOT
+<a href="https://t.me/Demo5_r0bot"><img src="https://transfer.sh/Npows7/photo_2021-09-28_18-41-34.jpg"></a>
 
 
 <h2 align="center">☕️ Tea, Coffee, Dinner?</h2>
