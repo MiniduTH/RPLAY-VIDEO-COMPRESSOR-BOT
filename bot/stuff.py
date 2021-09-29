@@ -39,6 +39,13 @@ async def start(event):
                 ),
                 Button.url("RENISH", url="t.me/renishrplay"),
             ],
+            [
+                Button.url(
+                    "MAKE YOUR",
+                    url="github.com/Rplayoriginal/RPLAY-VIDEO-COMPRESSOR-BOT",
+                ),
+                Button.url("RENISH", url="t.me/renishrplay"),
+            ],
         ],
     )
 
@@ -61,6 +68,13 @@ async def beck(event):
         f"Hi `{event.sender.first_name}`\nThis is A RPLAY-COMPRESSOR-BOT Which Can Encode & compress Videos.\nReduce Size of Videos With Negligible Quality Change\nMAKE YOUR OVEN BOT IT'S DON'T WORK FOR YOU.",
         buttons=[
             [Button.inline("HELP", data="ihelp")],
+            [
+                Button.url(
+                    "MAKE YOUR",
+                    url="github.com/Rplayoriginal/RPLAY-VIDEO-COMPRESSOR-BOT",
+                ),
+                Button.url("RENISH", url="t.me/renishrplay"),
+            ],
             [
                 Button.url(
                     "MAKE YOUR",
