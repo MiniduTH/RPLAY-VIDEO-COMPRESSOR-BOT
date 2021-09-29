@@ -27,6 +27,6 @@
 
 <h2 align="center">☕️ Tea, Coffee, Dinner?</h2>
 <p align="center">
-    <a href="https://www.buymeacoffee.com/Rplay" target="_blank"><img src="https://cdn.buymeacoffee.com/buttons/v2/default-red.png" alt="Buy Me A Coffee" height="30px" ></a>
-    <a href="https://www.paypal.me/renish12"><img src="https://img.shields.io/badge/PayPal-00457C?style=for-the-badge&logo=paypal&logoColor=white" alt="" height="30px"></a>
+    <a href="https://www.buymeacoffee.com/Rplay" target="_blank"><img src="https://cdn.buymeacoffee.com/buttons/v2/default-yellow.png" alt="Buy Me A Coffee" style="height: 60px !important;width: 217px !important;" ></a>
+    <a href="https://www.paypal.me/renish12"><img src="paypal.svg" at="PayPal" stype="height: 60px !important;width: 217px !important;" ></a>
 </p>
