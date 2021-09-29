@@ -44,7 +44,10 @@ async def start(event):
                     "Rplay ™ movie",
                     url="t.me/rplaymovie",
                 ),
-                Button.url("Rplay ™ STICKERS", url="t.me/addstickers/Rplay_movies_stickers_by_stickersthiefbot"),
+                Button.url(
+                    "Rplay ™ STICKERS",
+                    url="t.me/addstickers/Rplay_movies_stickers_by_stickersthiefbot",
+                ),
             ],
             [
                 Button.url(
@@ -87,7 +90,10 @@ async def beck(event):
                     "Rplay ™ movie",
                     url="t.me/rplaymovie",
                 ),
-                Button.url("RENISH", url="t.me/addstickers/Rplay_movies_stickers_by_stickersthiefbot"),
+                Button.url(
+                    "RENISH",
+                    url="t.me/addstickers/Rplay_movies_stickers_by_stickersthiefbot",
+                ),
             ],
             [
                 Button.url(
