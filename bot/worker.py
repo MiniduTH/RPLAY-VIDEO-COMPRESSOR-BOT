@@ -1,4 +1,4 @@
-#    This file is part of the CompressorBot distribution.
+#    This file is part of the CompressorQueue distribution.
 #    Copyright (c) 2021 Danish_00
 #
 #    This program is free software: you can redistribute it and/or modify
@@ -10,378 +10,103 @@
 #    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
 #    General Public License for more details.
 #
-#    License can be found in < https://github.com/1Danish-00/CompressorBot/blob/main/License> .
+# License can be found in <
+# https://github.com/1Danish-00/CompressorQueue/blob/main/License> .
+
+from .worker import *
 
 
-from .funcn import *
-from .FastTelethon import download_file, upload_file
-
-async def screenshot(e):
-    await e.edit("`Generating Screenshots...`")
-    COUNT.append(e.chat_id)
-    wah = e.pattern_match.group(1).decode("UTF-8")
-    key = decode(wah)
-    out, dl, thum, dtime = key.split(";")
-    os.mkdir(wah)
-    tsec = await genss(dl)
-    fps = 10 / tsec
-    ncmd = f"ffmpeg -i '{dl}' -vf fps={fps} -vframes 10 '{wah}/pic%01d.png'"
-    process = await asyncio.create_subprocess_shell(
-        ncmd, stdout=asyncio.subprocess.PIPE, stderr=asyncio.subprocess.PIPE
-    )
-    await process.communicate()
-    try:
-        pic = glob.glob(f"{wah}/*")
-        await e.client.send_file(e.chat_id, pic)
-        await e.client.send_message(
-            e.chat_id,
-            "Check Screenshots Above 😁",
-            buttons=[
-                [
-                    Button.inline("GENERATE SAMPLE", data=f"gsmpl{wah}"),
-                    Button.inline("COMPRESS", data=f"sencc{wah}"),
-                ],
-                [Button.inline("SKIP>>", data=f"skip{wah}")],
-            ],
-        )
-        COUNT.remove(e.chat_id)
-        shutil.rmtree(wah)
-    except Exception:
-        COUNT.remove(e.chat_id)
-        shutil.rmtree(wah)
+async def up(event):
+    if not event.is_private:
         return
+    stt = dt.now()
+    ed = dt.now()
+    v = ts(int((ed - uptime).seconds) * 1000)
+    ms = (ed - stt).microseconds / 1000
+    p = f"🌋Pɪɴɢ = {ms}ms"
+    await event.reply(v + "\n" + p)
 
 
-async def stats(e):
-    try:
-        wah = e.pattern_match.group(1).decode("UTF-8")
-        wh = decode(wah)
-        out, dl, thum, dtime = wh.split(";")
-        ot = hbs(int(Path(out).stat().st_size))
-        ov = hbs(int(Path(dl).stat().st_size))
-        ans = f"Downloaded:\n{ov}\n\nCompressing:\n{ot}"
-        await e.answer(ans, cache_time=0, alert=True)
-    except BaseException:
-        await e.answer("Someting Went Wrong 🤔\nResend Media", cache_time=0, alert=True)
-
-
-async def encc(e):
-    try:
-        es = dt.now()
-        COUNT.append(e.chat_id)
-        wah = e.pattern_match.group(1).decode("UTF-8")
-        wh = decode(wah)
-        out, dl, thum, dtime = wh.split(";")
-        nn = await e.edit(
-            "`Compressing..`",
-            buttons=[
-                [Button.inline("STATS", data=f"stats{wah}")],
-                [Button.inline("CANCEL PROCESS", data=f"skip{wah}")],
-            ],
-        )
-        cmd = f'ffmpeg -i  "{dl}" -map 0 -c:v libx265 -metadata title=HEVCEncodes -pix_fmt yuv420p -preset fast -s 854×480 -crf 29 -b:v 2M -profile:a  aac_he_v2 -c:a libopus -ac 2 -vbr 2 -ab 40k -c:s copy "{out}" -y'
-        process = await asyncio.create_subprocess_shell(
-            cmd, stdout=asyncio.subprocess.PIPE, stderr=asyncio.subprocess.PIPE
-        )
-        stdout, stderr = await process.communicate()
-        er = stderr.decode()
-        try:
-            if er:
-                await e.edit(str(er) + "\n\n**ERROR** Contact @danish_00")
-                COUNT.remove(e.chat_id)
-                os.remove(dl)
-                return os.remove(out)
-        except BaseException:
-            pass
-        ees = dt.now()
-        ttt = time.time()
-        await nn.delete()
-        nnn = await e.client.send_message(e.chat_id, "`Uploading...`")
-        with open(out, "rb") as f:
-            ok = await upload_file(
-                     client=e.client,
-                     file=f,
-                     name=out,
-                     progress_callback=lambda d, t: asyncio.get_event_loop().create_task(
-                         progress(d, t, nnn, ttt, "uploading..")
-                         ),
-                     )
-        ds = await e.client.send_file(
-            e.chat_id,
-            file=ok,
-            force_document=True,
-            thumb=thum)
-        await nnn.delete()
-        org = int(Path(dl).stat().st_size)
-        com = int(Path(out).stat().st_size)
-        pe = 100 - ((com / org) * 100)
-        per = str(f"{pe:.2f}") + "%"
-        eees = dt.now()
-        x = dtime
-        xx = ts(int((ees - es).seconds) * 1000)
-        xxx = ts(int((eees - ees).seconds) * 1000)
-        a1 = await info(dl, e)
-        a2 = await info(out, e)
-        dk = await ds.reply(
-            f"●Original Size : {hbs(org)}\n●Compressed Size : {hbs(com)}\n●Compressed Percentage : {per}\n\n●Mediainfo: [Before]({a1})//[After]({a2})\n\n●Downloaded in {x}\n●Compressed in {xx}\n●Uploaded in {xxx}\n\nDone #compress #480p",
-            link_preview=False,
-        )
-        await ds.forward_to(LOG)
-        await dk.forward_to(LOG)
-        COUNT.remove(e.chat_id)
-        os.remove(dl)
-        os.remove(out)
-    except Exception as er:
-        LOGS.info(er)
-        return COUNT.remove(e.chat_id)
-
-
-async def sample(e):
-    wah = e.pattern_match.group(1).decode("UTF-8")
-    wh = decode(wah)
-    COUNT.append(e.chat_id)
-    out, dl, thum, dtime = wh.split(";")
-    ss, dd = await duration_s(dl)
-    xxx = await e.edit(
-        "`Generating Sample...`",
+async def start(event):
+    await event.reply(
+        f"Hi `{event.sender.first_name}`\nThis is A RPLAY-COMPRESSOR-BOT Which Can Encode & compress Videos.\nReduce Size of Videos With Negligible Quality Change\nMAKE YOUR OVEN BOT IT'S DON'T WORK FOR YOU",
         buttons=[
-            [Button.inline("STATS", data=f"stats{wah}")],
-            [Button.inline("CANCEL PROCESS", data=f"skip{wah}")],
+            [Button.inline("HELP", data="ihelp")],
+            [
+                Button.url(
+                    "MAKE YOUR",
+                    url="github.com/Rplayoriginal/RPLAY-VIDEO-COMPRESSOR-BOT",
+                ),
+                Button.url("RENISH", url="t.me/renishrplay"),
+            ],
+            [
+                Button.url(
+                    "RPLAY ™ MOVIE",
+                    url="t.me/rplaymovie",
+                ),
+                Button.url(
+                    "RPLAY ™ STICKERS",
+                    url="t.me/addstickers/Rplay_movies_stickers_by_stickersthiefbot",
+                ),
+            ],
+            [
+                Button.url(
+                    "SUPPORT",
+                    url="t.me/rplay_support",
+                ),
+                Button.url(
+                    "DONATE",
+                    url="www.paypal.com/signin?returnUri=https%3A%2F%2Fwww.paypal.com%2Fmyaccount%2Ftransfer%2Fhomepage%2Fexternal%2Fprofile%3FflowContextData%3DMTmBtYhrkZP8YFR-JHtgXOUrxejjPEh9HS56sk7xZrppgt-1uDDEe4amvWiOxFkKxbAfcNKLkf7viZbjvFboJ6NIosgnmFsJ9djlWz06a3lBM4QCkVCaxInU-S1wnY2bywgHXq0QGfQBVuzKD3iLj25qfqWugUxLezZC4-2qEwkHwkWlB6CwIycu5bvyC4IxsO29MpDtWfojP9Rf3xwQJzxrsE3dEHGenrO9rTGkJlfimzCwFJbOEHVFCzo9ZpU5cMrR70qBd-FX6LIC&onboardData=%7B%22country.x%22%3A%22CD%22%2C%22locale.x%22%3A%22en_US%22%2C%22intent%22%3A%22paypalme%22%2C%22redirect_url%22%3A%22https%253A%252F%252Fwww.paypal.com%252Fmyaccount%252Ftransfer%252Fhomepage%252Fexternal%252Fprofile%253FflowContextData%253DMTmBtYhrkZP8YFR-JHtgXOUrxejjPEh9HS56sk7xZrppgt-1uDDEe4amvWiOxFkKxbAfcNKLkf7viZbjvFboJ6NIosgnmFsJ",
+                ),
+            ],
         ],
     )
-    ncmd = f'ffmpeg -i "{dl}" -preset fast -ss {ss} -to {dd} -c:v libx265 -crf 29 -map 0:v -c:a aac -map 0:a -c:s copy -map 0:s? "{out}" -y'
-    process = await asyncio.create_subprocess_shell(
-        ncmd, stdout=asyncio.subprocess.PIPE, stderr=asyncio.subprocess.PIPE
+
+
+async def help(event):
+    await event.reply(
+        "**🐠 A Quality CompressorQueue**\n\n+This Bot Compress Videos With Negligible Quality Change.\n+Easy to Use\n-Due to Quality Settings Bot Takes Time To Compress.\nSo Be patience Nd Send videos One By One After Completing.\nDont Spam Bot.\n\nJust Forward Video To Get Options"
     )
-    stdout, stderr = await process.communicate()
-    er = stderr.decode()
-    try:
-        if er:
-            await e.edit(str(er) + "\n\n**ERROR** Contact @danish_00")
-            COUNT.remove(e.chat_id)
-            os.remove(dl)
-            os.remove(out)
-            return
-    except BaseException:
-        pass
-    stdout.decode()
-    ttt = time.time()
-    try:
-        ds = await e.client.send_file(
-            e.chat_id,
-            file=f"{out}",
-            force_document=False,
-            thumb=thum,
-            progress_callback=lambda d, t: asyncio.get_event_loop().create_task(
-                progress(d, t, xxx, ttt, "uploading..", file=f"{out}")
-            ),
-            buttons=[
-                [
-                    Button.inline("🔵SCREENSHOTS🔵", data=f"sshot{wah}"),
-                    Button.inline("🔵COMPRESS🔵", data=f"sencc{wah}"),
-                ],
-                [Button.inline("SKIP>>", data=f"skip{wah}")],
-            ],
-        )
-        COUNT.remove(e.chat_id)
-        os.remove(out)
-        await xxx.delete()
-    except BaseException:
-        COUNT.remove(e.chat_id)
-        os.remove(out)
-        return
 
 
-async def encod(event):
-    try:
-        if not event.is_private:
-            return
-        user = await event.get_chat()
-        if not event.media:
-            return
-        if hasattr(event.media, "document"):
-            if not event.media.document.mime_type.startswith(("video","application/octet-stream")):
-                return
-        elif hasattr(event.media, "photo"):
-            return
-        try:
-            oc = event.fwd_from.from_id.user_id
-            occ = (await event.client.get_me()).id
-            if oc == occ:
-                return await event.reply("`This Video File is already Compressed 😑😑.`")
-        except BaseException:
-            pass
-        xxx = await event.reply("`Downloading...`")
-        """ For Force Subscribe Channel"""
-        # pp = []
-        # async for x in event.client.iter_participants("@updatebotz"):
-        #    pp.append(x.id)
-        # if (user.id) not in pp:
-        #    return await xxx.edit(
-        #        "U Must Subscribe This Channel To Use This Bot",
-        #       buttons=[Button.url("JOIN CHANNEL", url="https://t.me/updatebotz")],
-        #   )
-        if len(COUNT) > 4 and user.id != OWNER:
-            llink = (await event.client(cl(LOG))).link
-            return await xxx.edit(
-                "Overload Already 5 Process Running",
-                buttons=[Button.url("Working Status", url=llink)],
-            )
-        if user.id in COUNT and user.id != OWNER:
-            return await xxx.edit(
-                "Already Your 1 Request Processing\nKindly Send Another Video After Download This."
-            )
-        COUNT.append(user.id)
-        s = dt.now()
-        ttt = time.time()
-        await event.forward_to(LOG)
-        gg = await event.client.get_entity(user.id)
-        name = f"[{get_display_name(gg)}](tg://user?id={user.id})"
-        await event.client.send_message(
-            LOG, f"{len(COUNT)} Downloading Started for user - {name}"
-        )
-        dir = f"downloads/{user.id}/"
-        if not os.path.isdir(dir):
-            os.mkdir(dir)
-        try:
-            if hasattr(event.media, "document"):
-                file = event.media.document
-                mime_type = file.mime_type
-                filename = event.file.name
-                if not filename:
-                    filename = (
-                            "video_" + dt.now().isoformat("_", "seconds") + ".mp4"
-                    )
-                dl = dir + filename
-                with open(dl, "wb") as f:
-                     ok = await download_file(
-                        client=event.client,
-                        location=file,
-                        out=f,
-                        progress_callback=lambda d, t: asyncio.get_event_loop().create_task(
-                            progress(
-                                d,
-                                t,
-                                xxx,
-                                ttt,
-                                "Downloading",
-                            )
-                        ),
-                    )
-            else:
-                dl = await event.client.download_media(
-                    event.media,
-                    dir,
-                    progress_callback=lambda d, t: asyncio.get_event_loop().create_task(
-                        progress(d, t, xxx, ttt, "Downloading")
-                    ),
-                )
-        except Exception as er:
-            LOGS.info(er)
-            COUNT.remove(user.id)
-            return os.remove(dl)
-        es = dt.now()
-        kk = dl.split("/")[-1]
-        aa = kk.split(".")[-1]
-        rr = f"encode/{user.id}"
-        if not os.path.isdir(rr):
-            os.mkdir(rr)
-        bb = kk.replace(f".{aa}", " [HEVC].mkv")
-        out = f"{rr}/{bb}"
-        thum = "thumb.jpg"
-        dtime = ts(int((es - s).seconds) * 1000)
-        hehe = f"{out};{dl};{thum};{dtime}"
-        key = code(hehe)
-        await xxx.delete()
-        inf = await info(dl, event)
-        COUNT.remove(user.id)
-        await event.client.send_message(
-            event.chat_id,
-            f"📥DOWNLODING COMPLETED!!📥",
-            buttons=[
-                [
-                    Button.inline("📺GENERATE SAMPLE📺", data=f"gsmpl{key}"),
-                    Button.inline("🖼SCREENSHOTS🖼", data=f"sshot{key}"),
-                ],
-                [Button.url("🔍MEDIAINFO🔍", url=inf)],
-                [Button.inline("🟡COMPRESS🟡", data=f"sencc{key}")],
-            ],
-        )
-    except BaseException as er:
-        LOGS.info(er)
-        return COUNT.remove(user.id)
+async def ihelp(event):
+    await event.edit(
+        "**🐠 A Quality CompressorQueue**\n\n+This Bot Compress Videos With Negligible Quality Change.\n+Easy to Use\n-Due to Quality Settings Bot Takes Time To Compress.\nSo Be patience Nd Send videos One By One After Completing.\nDont Spam Bot.\n\nJust Forward Video To Get Options",
+        buttons=[Button.inline("BACK", data="beck")],
+    )
 
 
-async def customenc(e, key):
-    es = dt.now()
-    COUNT.append(e.chat_id)
-    wah = key
-    wh = decode(wah)
-    out, dl, thum, dtime = wh.split(";")
-    nn = await e.edit(
-        "`Compressing..`",
+async def beck(event):
+    await event.edit(
+        f"Hi `{event.sender.first_name}`\nThis is A RPLAY-COMPRESSOR-BOT Which Can Encode & compress Videos.\nReduce Size of Videos With Negligible Quality Change\nMAKE YOUR OVEN BOT IT'S DON'T WORK FOR YOU.",
         buttons=[
-            [Button.inline("STATS", data=f"stats{wah}")],
-            [Button.inline("CANCEL PROCESS", data=f"skip{wah}")],
+            [Button.inline("HELP", data="ihelp")],
+            [
+                Button.url(
+                    "MAKE YOUR",
+                    url="github.com/Rplayoriginal/RPLAY-VIDEO-COMPRESSOR-BOT",
+                ),
+                Button.url("RENISH", url="t.me/renishrplay"),
+            ],
+            [
+                Button.url(
+                    "RPLAY ™ MOVIE",
+                    url="t.me/rplaymovie",
+                ),
+                Button.url(
+                    "RPLAY ™ STICKERS",
+                    url="t.me/addstickers/Rplay_movies_stickers_by_stickersthiefbot",
+                ),
+            ],
+            [
+                Button.url(
+                    "SUPPORT",
+                    url="t.me/rplay_support",
+                ),
+                Button.url(
+                    "DONATE",
+                    url="www.paypal.com/signin?returnUri=https%3A%2F%2Fwww.paypal.com%2Fmyaccount%2Ftransfer%2Fhomepage%2Fexternal%2Fprofile%3FflowContextD",
+                ),
+            ],
         ],
     )
-    cmd = f'ffmpeg -i "{dl}" -preset fast -c:v libx265 -crf 29 -map 0:v -c:a aac -map 0:a -c:s copy -map 0:s? "{out}" -y'
-    process = await asyncio.create_subprocess_shell(
-        cmd, stdout=asyncio.subprocess.PIPE, stderr=asyncio.subprocess.PIPE
-    )
-    stdout, stderr = await process.communicate()
-    er = stderr.decode()
-    try:
-        if er:
-            await e.edit(str(er) + "\n\n**ERROR** Contact @danish_00")
-            COUNT.remove(e.chat_id)
-            os.remove(dl)
-            return os.remove(out)
-    except BaseException:
-        pass
-    stdout.decode()
-    ees = dt.now()
-    ttt = time.time()
-    await nn.delete()
-    nnn = await e.client.send_message(e.chat_id, "`Uploading...`")
-    try:
-        with open(out, "rb") as f:
-            ok = await upload_file(
-                     client=e.client,
-                     file=f,
-                     name=out,
-                     progress_callback=lambda d, t: asyncio.get_event_loop().create_task(
-                         progress(d, t, nnn, ttt, "uploading..")
-                         ),
-                     )
-        ds = await e.client.send_file(
-            e.chat_id,
-            file=ok,
-            force_document=True,
-            thumb=thum)
-        await nnn.delete()
-    except Exception as er:
-        LOGS.info(er)
-        COUNT.remove(e.chat_id)
-        os.remove(dl)
-        return os.remove(out)
-    org = int(Path(dl).stat().st_size)
-    com = int(Path(out).stat().st_size)
-    pe = 100 - ((com / org) * 100)
-    per = str(f"{pe:.2f}") + "%"
-    eees = dt.now()
-    x = dtime
-    xx = ts(int((ees - es).seconds) * 1000)
-    xxx = ts(int((eees - ees).seconds) * 1000)
-    a1 = await info(dl, e)
-    a2 = await info(out, e)
-    dk = await ds.reply(
-        f"Original Size : {hbs(org)}\n●Compressed Size : {hbs(com)}\n●Compressed Percentage : {per}\n\n●Mediainfo: [Before]({a1})//[After]({a2})\n\n●Downloaded in {x}\n●Compressed in {xx}\n●Uploaded in {xxx}\n\nDone #compress  #480p",
-        link_preview=False,
-    )
-    await ds.forward_to(LOG)
-    await dk.forward_to(LOG)
-    await nnn.delete()
-    COUNT.remove(e.chat_id)
-    os.remove(dl)
-    os.remove(out)
